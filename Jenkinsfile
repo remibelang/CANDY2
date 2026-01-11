@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        SONAR_TOKEN = credentials('token-1')  // SonarQube token in Jenkins
-        DOCKER_IMAGE = "sample-java-app"      // Local Docker image name
+        SONAR_TOKEN = credentials('token-1')   // Your SonarQube token in Jenkins
+        DOCKER_IMAGE = "sample-java-app"       // Docker image name
     }
 
     stages {

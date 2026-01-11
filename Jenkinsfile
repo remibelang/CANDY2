@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        SONAR_TOKEN = credentials('token-1') // SonarQube token
-        DOCKER_IMAGE = "sample-java-app"     // Local Docker image name
+        SONAR_TOKEN = credentials('token-1')  // SonarQube token in Jenkins
+        DOCKER_IMAGE = "sample-java-app"      // Local Docker image name
     }
 
     stages {
@@ -33,7 +33,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar'
+                    sh 'mvn sonar:sonar -Dsonar.projectKey=candy2 -Dsonar.projectName="CANDY2"'
                 }
             }
         }

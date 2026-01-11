@@ -2,13 +2,14 @@ pipeline {
     agent any
 
     environment {
-        SONAR_TOKEN = credentials('token-1') // your SonarQube token
+        SONAR_TOKEN = credentials('token-1') // SonarQube token
+        DOCKER_IMAGE = "sample-java-app"     // Local Docker image name
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/<remibelang>/<candy2>.git', credentialsId: 'github-token'
+                git branch: 'main', url: 'https://github.com/remibelang/CANDY2.git', credentialsId: 'github-token'
             }
         }
 
@@ -44,6 +45,17 @@ pipeline {
                 }
             }
         }
+
+        stage('Docker Build & Run') {
+            steps {
+                sh '''
+                    docker build -t $DOCKER_IMAGE .
+                    docker stop $DOCKER_IMAGE || true
+                    docker rm $DOCKER_IMAGE || true
+                    docker run -d --name $DOCKER_IMAGE -p 8080:8080 $DOCKER_IMAGE
+                '''
+            }
+        }
     }
 
     post {
@@ -52,3 +64,4 @@ pipeline {
         failure { echo "Pipeline failed!" }
     }
 }
+
